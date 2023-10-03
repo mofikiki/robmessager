@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Robot Control</title>
+    <link rel="stylesheet" type="text/css" href="/static/style.css">
+</head>
+<body>
+    <h1>Control the Robot</h1>
+    <label for="x">X:</label>
+    <input type="number" id="x" step="0.01"><br>
+    <label for="y">Y:</label>
+    <input type="number" id="y" step="0.01"><br>
+    <label for="theta">Theta:</label>
+    <input type="number" id="theta" step="0.01"><br>
+    <button onclick="sendData()">Send Data</button>
+
+    <script>
+        function sendData() {
+            const x = parseFloat(document.getElementById("x").value);
+            const y = parseFloat(document.getElementById("y").value);
+            const theta = parseFloat(document.getElementById("theta").value);
+
+            fetch("/move", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ x, y, theta })
+            })
+            .then(response => {
+                if (response.ok) {
+                    alert("Data sent successfully");
+                } else {
+                    alert("Failed to send data");
+                }
+            })
+            .catch(error => {
+                alert("An error occurred: " + error);
+            });
+        }
+    </script>
+</body>
+</html>
